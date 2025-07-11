@@ -1,0 +1,152 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Variantes */
+.button-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.button-primary:hover:not(.button-disabled) {
+  background-color: #2563eb;
+}
+
+.button-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.button-secondary:hover:not(.button-disabled) {
+  background-color: #4b5563;
+}
+
+.button-success {
+  background-color: #10b981;
+  color: white;
+}
+
+.button-success:hover:not(.button-disabled) {
+  background-color: #059669;
+}
+
+.button-danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.button-danger:hover:not(.button-disabled) {
+  background-color: #dc2626;
+}
+
+.button-warning {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.button-warning:hover:not(.button-disabled) {
+  background-color: #d97706;
+}
+
+.button-outline {
+  background-color: transparent;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+}
+
+.button-outline:hover:not(.button-disabled) {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.button-ghost {
+  background-color: transparent;
+  color: #374151;
+}
+
+.button-ghost:hover:not(.button-disabled) {
+  background-color: #f3f4f6;
+}
+
+/* Tamanhos */
+.button-small {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.button-medium {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+.button-large {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Estados */
+.button-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-loading {
+  cursor: wait;
+}
+
+.button-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.button-text-loading {
+  opacity: 0.7;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Botão de largura total */
+.button-full {
+  width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .button-medium {
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .button-large {
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}
+
