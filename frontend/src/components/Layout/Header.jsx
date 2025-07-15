@@ -4,7 +4,7 @@ import { Menu, User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import './Header.css';
 
-const Header = ({ user, onMenuClick, sidebarOpen }) => {
+const Header = ({ user, onMenuClick }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { logout } = useAuth();
   const dropdownRef = useRef(null);

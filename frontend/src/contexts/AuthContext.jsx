@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }) => {
             }
           }
         }
-      } catch (error) {
-        console.error('Erro ao verificar autenticação:', error);
+      } catch {
+        console.error('Erro ao verificar autenticação');
         await logout();
       } finally {
         setLoading(false);
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         return { success: false, error: result.error };
       }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro inesperado ao fazer login' };
     } finally {
       setLoading(false);
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         return { success: false, error: result.error };
       }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro inesperado ao criar conta' };
     } finally {
       setLoading(false);
@@ -91,8 +91,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await authService.logout();
-    } catch (error) {
-      console.error('Erro ao fazer logout:', error);
+    } catch {
+      console.error('Erro ao fazer logout');
     } finally {
       setUser(null);
       setIsAuthenticated(false);
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         return { success: false, error: result.error };
       }
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro inesperado ao atualizar perfil' };
     }
   };
@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await authService.changePassword(passwordData);
       return result;
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro inesperado ao alterar senha' };
     }
   };
@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await authService.requestPasswordReset(email);
       return result;
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro inesperado ao solicitar reset de senha' };
     }
   };
@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await authService.confirmPasswordReset(uid, token, passwordData);
       return result;
-    } catch (error) {
+    } catch {
       return { success: false, error: 'Erro inesperado ao resetar senha' };
     }
   };

@@ -73,7 +73,7 @@ const ResetPassword = () => {
       } else {
         setErrors({ general: result.error });
       }
-    } catch (error) {
+    } catch {
       setErrors({ general: 'Erro inesperado. Tente novamente.' });
     } finally {
       setLoading(false);
