@@ -130,15 +130,6 @@ class PasswordResetRequestView(APIView):
             # Por simplicidade, retornamos o token e uid
             reset_link = f"http://localhost:3000/reset-password/{uid}/{token}/"
             
-            # Em produção, envie por e-mail:
-            # send_mail(
-            #     'Reset de Senha - Gestor Financeiro',
-            #     f'Clique no link para resetar sua senha: {reset_link}',
-            #     settings.DEFAULT_FROM_EMAIL,
-            #     [email],
-            #     fail_silently=False,
-            # )
-            
             return Response({
                 'message': 'E-mail de reset enviado com sucesso!',
                 'reset_link': reset_link  # Remover em produção
@@ -158,23 +149,18 @@ class PasswordResetConfirmView(APIView):
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return Response({
-                'error': 'Link de reset inválido.'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Link inválido'}, status=status.HTTP_400_BAD_REQUEST)
         
         if not default_token_generator.check_token(user, token):
-            return Response({
-                'error': 'Token de reset inválido ou expirado.'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Token inválido ou expirado'}, status=status.HTTP_400_BAD_REQUEST)
         
         serializer = PasswordResetConfirmSerializer(data=request.data)
-        
         if serializer.is_valid():
             user.set_password(serializer.validated_data['new_password'])
             user.save()
             
             return Response({
-                'message': 'Senha resetada com sucesso!'
+                'message': 'Senha alterada com sucesso!'
             }, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -182,22 +168,24 @@ class PasswordResetConfirmView(APIView):
 
 class LogoutView(APIView):
     """
-    View para logout (blacklist do refresh token).
+    View para logout do usuário.
     """
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
         try:
-            refresh_token = request.data["refresh"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
+            refresh_token = request.data.get('refresh_token')
+            if refresh_token:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
             
             return Response({
                 'message': 'Logout realizado com sucesso!'
             }, status=status.HTTP_200_OK)
+        
         except Exception as e:
             return Response({
-                'error': 'Token inválido.'
+                'error': 'Erro ao fazer logout'
             }, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -205,31 +193,27 @@ class LogoutView(APIView):
 @permission_classes([permissions.IsAuthenticated])
 def user_stats(request):
     """
-    Endpoint para estatísticas básicas do usuário.
+    Retorna estatísticas básicas do usuário.
     """
     user = request.user
     
-    # Aqui você pode adicionar estatísticas específicas
-    stats = {
+    return Response({
         'user_id': user.id,
-        'full_name': user.full_name,
+        'username': user.username,
         'email': user.email,
         'date_joined': user.date_joined,
-        'has_partner': bool(user.partner),
-        'partner_name': user.partner.full_name if user.partner else None,
-    }
-    
-    return Response(stats)
+        'last_login': user.last_login,
+        'is_active': user.is_active,
+    })
 
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
 def health_check(request):
     """
-    Endpoint para verificação de saúde da API.
+    Endpoint de verificação de saúde da API.
     """
     return Response({
         'status': 'healthy',
-        'message': 'API do Gestor Financeiro está funcionando!'
+        'message': 'API de autenticação funcionando corretamente!'
     })
-

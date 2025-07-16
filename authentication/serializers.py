@@ -128,4 +128,3 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         if attrs['new_password'] != attrs['new_password_confirm']:
             raise serializers.ValidationError("As senhas não coincidem.")
         return attrs
-
